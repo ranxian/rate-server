@@ -15,5 +15,6 @@ evaluation, it contains the following APIs.
 1. Install JDK1.7+
 2. Mysql 5.5+
 3. Maven
-2. Install IntelliJ 13+ and open this project using IntelliJ
-3. Run `mvn package` from `rate/` directory, it will compile a executable rate-server jar package
+4. Install IntelliJ 13+ and open this project using IntelliJ (File -> Open)
+5. Run `mvn package`, it will compile a executable rate-server jar package named `APIServer-xx` into `target` directory
+6. Run with: `java -jar APIServer-xx`
