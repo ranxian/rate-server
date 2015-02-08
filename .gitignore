@@ -1,0 +1,6 @@
+/out/*
+.idea/workspace.xml
+*.DS_store
+*.properties
+/logs/
+/target/*

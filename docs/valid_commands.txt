@@ -1,0 +1,56 @@
+############
+## Lexeme ##
+############
+{string} := Any Valid UTF-8 string without blank characters
+{uuid} := String like e974304d-1abc-4eb9-91f5-8af3e69628f9
+{number} := Well, numbers
+{tags} := String separated by commas.
+#############
+## Grammar ##
+#############
+
+# Create view primitive.
+# tag OR date must be given, if both provide will do an AND.
+# tag can be specified with elementary logic operations.
+# date is precised to day, and can be given as a date interval.
+{create_view} := create view name:{string} < tag:{tag-logic} | date:{date} >
+# Examples
+
+# {tag-logic} examples
+tagA
+(tagA&tagB)|(tagC)
+
+# {date} examples
+20121213
+20121213~ # which means `since (inclusive) 20121213`
+~20121213 # which means `after (inclusive) 20121213`
+20121213~20121214
+
+# create benchmark primitive.
+
+<create_benchmark> := create benchmark name:<string> view:<uuid> desc:<string> <allinter:true|false allinner:true|false all:true|false
+                        classcount:<number> samplecount:<number>  >
+
+# create algorithm primitive.
+
+<create_algorithm> := create algorithm name:{string} desc:{string} path:{string, path to local dir} tags:{tags}
+
+# run job primitive.
+
+<run_job> := run auuid:{uuid} buuid:{uuid}
+
+# download primitive.
+
+<download> := download < task | benchmark | sample | class | view | algorithm > uuid:<uuid> path:{string, path to local dir}
+
+# delete primitive.
+
+< delete | update | info > < XXX > uuid:{uuid}
+
+# list primitive.
+
+list algorithm tag:<tag-logic>
+
+# login.
+
+login email:<email> password:<password>

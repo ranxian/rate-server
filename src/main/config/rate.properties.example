@@ -1,0 +1,13 @@
+RATE_ROOT=/home/Ran Xian/RATE_ROOT
+DBUrl = localhost:3306/rate
+DBUser = root
+DBPass = testing
+DIST_RUN=1
+PYTHON_PATH=/usr/bin/python
+
+DIST_SERVER=localhost
+
+SERVER_PORT=2015
+SERVER_HOST=localhost
+
+FETCH_LIMIT=50000
