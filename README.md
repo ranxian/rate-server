@@ -12,7 +12,7 @@ evaluation, it contains the following APIs.
 ## Up and running
 
 ### Install IDE and other tools/softwares needed
-1. Install JDK1.7+
+1. Install JDK1.7+, you have to set the environment variable `JAVA_HOME` properly
 2. Mysql 5.5+
 3. Maven
 4. Install IntelliJ 13+ and open this project using IntelliJ (File -> Open)
