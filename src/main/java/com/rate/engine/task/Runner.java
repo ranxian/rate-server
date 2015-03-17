@@ -39,6 +39,7 @@ public class Runner implements Runnable {
             if (RateConfig.isDistRun()) {
                 String cmd = buildDistCommand();
                 logger.trace("Run with command " + cmd);
+                System.out.println("Run with command " + cmd);
                 Process process = Runtime.getRuntime().exec(cmd);
 
                 BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
