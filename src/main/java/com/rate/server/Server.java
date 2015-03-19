@@ -124,12 +124,13 @@ public class Server {
         }
 
         private void failed(String msg) {
+            System.out.println("failed: ");
             JSONObject object = new JSONObject();
             object.put("result", "failed");
             object.put("command", command);
             if (msg != null)
                 object.put("message", msg);
-            logger.debug(object.toString());
+            System.out.println(object.toString());
             println(object.toString());
         }
 
