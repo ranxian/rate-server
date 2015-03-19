@@ -521,6 +521,7 @@ public class GeneralAnalyzer extends BasicAnalyzer implements Comparator<String>
         plot.setForegroundAlpha(0.6f);
         plot.getDomainAxis().setRange(new Range(0.0, 1.0));
         plot.getRangeAxis().setRange(0.0, 1.0);
+        chart.setBackgroundPaint(Color.WHITE);
 
         Title t = chart.getSubtitle(0);
         t.setBorder(0, 0, 0, 0);
@@ -560,7 +561,7 @@ public class GeneralAnalyzer extends BasicAnalyzer implements Comparator<String>
         Title t = chart.getSubtitle(0);
         t.setBorder(0, 0, 0, 0);
 
-        writePNG(chart, taskResult.getRocFilePath());
+        writePNG(chart, taskResult.getRocImagePath());
     }
     private void addROCCurve(XYSeriesCollection xySeriesCollection, String filePath, String xySeriesName, boolean isDET) {
         List<String> lines = null;
@@ -602,7 +603,7 @@ public class GeneralAnalyzer extends BasicAnalyzer implements Comparator<String>
         xySeriesCollection.setIntervalWidth(interval);
 
         addDistribution(xySeriesCollection, "Genuine", taskResult.getGenuineFilePath(), interval);
-        addDistribution(xySeriesCollection, "Imposter", taskResult.getGenuineFilePath(), interval);
+        addDistribution(xySeriesCollection, "Imposter", taskResult.getImposterFilePath(), interval);
 
         chart = ChartFactory.createHistogram(
                 "", // title

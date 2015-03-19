@@ -74,7 +74,9 @@ public class ViewUtils {
     }
 
     public static boolean delete(String uuid) throws Exception {
-        View.find(uuid).destroy();
+        View view = View.find(uuid);
+        if (view != null)
+            View.find(uuid).destroy();
         return true;
     }
 }
