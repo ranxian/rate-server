@@ -347,6 +347,7 @@ public class Server {
                     deleted = RunnerUtils.delete(uuid);
                 }
             } catch (Exception e) {
+                e.printStackTrace();
                 failed(e.getMessage());
                 return;
             }

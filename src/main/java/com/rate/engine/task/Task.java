@@ -97,6 +97,7 @@ public class Task {
             if (file.exists())
                 FileUtils.deleteDirectory(file);
         } catch (IOException ioe) {
+            ioe.printStackTrace();
             // ignore IOException
         }
     }

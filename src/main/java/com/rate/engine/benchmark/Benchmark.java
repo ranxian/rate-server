@@ -94,6 +94,7 @@ public class Benchmark {
             DBUtils.executeSQL("DELETE FROM benchmark where uuid=?", this.uuid);
         } catch (Exception e) {
             System.out.println("can't delete benchmark file, abort");
+            e.printStackTrace();
             return;
         }
         logger.info("benchmark " + this.uuid + " deleted");
