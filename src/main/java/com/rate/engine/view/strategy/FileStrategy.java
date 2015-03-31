@@ -49,6 +49,7 @@ public class FileStrategy extends BasicStrategy {
             reader = new BufferedReader(new FileReader(this.file));
             opened = true;
         }
+
         while (added <= limit) {
             String uuid = reader.readLine();
             if (uuid == null) {
@@ -62,6 +63,8 @@ public class FileStrategy extends BasicStrategy {
                 throw new Exception("No sample with uuid " + uuid);
             samples.add(sample);
         }
+
+        skip += added;
 
         return samples;
     }
