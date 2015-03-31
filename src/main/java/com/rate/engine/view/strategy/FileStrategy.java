@@ -48,7 +48,10 @@ public class FileStrategy extends BasicStrategy {
         }
         while (added <= limit) {
             String uuid = reader.readLine();
-            if (uuid == null) break;
+            if (uuid == null) {
+                reader.close();
+                break;
+            }
             if (uuid.startsWith("#") || uuid.equals(""))
                 continue;
             Sample sample = DBUtils.executeSQL(Sample.handler, "SELECT uuid, class_uuid FROM sample WHERE uuid=? and classified='VALID'", uuid);
@@ -56,10 +59,6 @@ public class FileStrategy extends BasicStrategy {
                 throw new Exception("No sample with uuid " + uuid);
             samples.add(sample);
         }
-
-        skip += limit;
-        if (skip >= limit)
-            reader.close();
 
         return samples;
     }
