@@ -15,10 +15,12 @@ import java.util.List;
 public class FileStrategy extends BasicStrategy {
     private File file;
     BufferedReader reader;
+    private Boolean opened;
 
     public FileStrategy(File file) {
         super();
         this.file = file;
+        this.opened = false;
     }
 
     @Override
@@ -43,8 +45,9 @@ public class FileStrategy extends BasicStrategy {
         List<Sample> samples = new ArrayList<Sample>();
 
         int added = 0;
-        if (skip == 0) {
+        if (!opened) {
             reader = new BufferedReader(new FileReader(this.file));
+            opened = true;
         }
         while (added <= limit) {
             String uuid = reader.readLine();
