@@ -37,6 +37,7 @@ public class FileStrategy extends BasicStrategy {
             c++;
         }
         this.total = c;
+        System.out.println("total is " + this.total);
         reader.close();
     }
 
@@ -53,7 +54,6 @@ public class FileStrategy extends BasicStrategy {
         while (added <= limit) {
             String uuid = reader.readLine();
             if (uuid == null) {
-                reader.close();
                 break;
             }
             if (uuid.startsWith("#") || uuid.equals(""))
@@ -65,6 +65,10 @@ public class FileStrategy extends BasicStrategy {
         }
 
         skip += added;
+        System.out.println("skip is " + skip);
+        if (skip >= total) {
+            reader.close();
+        }
 
         return samples;
     }
