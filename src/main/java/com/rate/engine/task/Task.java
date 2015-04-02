@@ -3,6 +3,7 @@ package com.rate.engine.task;
 import com.rate.engine.algorithm.Algorithm;
 import com.rate.engine.RateBeanProcessor;
 import com.rate.engine.benchmark.Benchmark;
+import com.rate.engine.task.result.GeneralResult;
 import com.rate.utils.DBUtils;
 import com.rate.utils.RateConfig;
 import lombok.Data;
@@ -147,7 +148,13 @@ public class Task {
 
     public JSONObject toJSON() {
         JSONObject object = new JSONObject();
-
+        GeneralResult result = new GeneralResult(this);
+        object.put("FMR100", result.getFMR100());
+        object.put("FMR1000", result.getFMR1000());
+        object.put("zeroFNMR", result.getZeroFNMR());
+        object.put("zeroFMR", result.getZeroFMR());
+        object.put("FTE", "0");
+        object.put("FTM", "0");
         object.put("uuid", this.uuid);
         object.put("buuid", this.benchmarkUuid);
         object.put("auuid", this.algorithmUuid);
