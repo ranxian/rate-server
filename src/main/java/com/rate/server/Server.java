@@ -374,10 +374,8 @@ public class Server {
 
             try {
                 if (target.equalsIgnoreCase("task")) {
-                    String info = RunnerUtils.info(args);
                     Task task = Task.find(uuid);
                     jsonObject = task.toJSON();
-                    jsonObject.put("task_info", info);
                     if (task.getFinished() != null) {
                         jsonObject.put("done", 1);
                         jsonObject.put("finished", task.getFinished().toString());
