@@ -36,6 +36,8 @@ public class GeneralAnalyzer extends BasicAnalyzer implements Comparator<String>
     @Getter
     @Setter
     private GeneralResult taskResult;
+    private int FTE = 0;
+    private int FTM = 0;
 
     @Override
     public void setTask(Task task) {
@@ -58,6 +60,9 @@ public class GeneralAnalyzer extends BasicAnalyzer implements Comparator<String>
         logger.trace("analyzeErrorRates");
         analyzeErrorRates();
         logger.trace("done");
+        logger.trace("analyzeFTEFTM");
+        analyzeFTEFTM();
+        logger.trace("done");
         logger.trace("analyzeROC");
         analyzeROC(taskResult.getFmrFilePath(), taskResult.getFnmrFilePath(), taskResult.getRocFilePath());
         logger.trace("done");
@@ -65,7 +70,44 @@ public class GeneralAnalyzer extends BasicAnalyzer implements Comparator<String>
         generateImage();
         logger.trace("done");
     }
-    // Split genuine and imposter scores
+
+    private void analyzeFTEFTM() throws Exception {
+        BufferedReader enrollResultReader = new BufferedReader(new FileReader(taskResult.getEnrollResultFilePath()));
+        PrintWriter FTEWriter = new PrintWriter(taskResult.getFTEFilePath());
+        while (true) {
+            String line = enrollResultReader.readLine();
+            if (line == null) break;
+
+            line = StringUtils.strip(line);
+            String sp[] = line.split(" ");
+            String uuid = sp[0];
+            if (!sp[1].equals("ok")) {
+                FTEWriter.println(uuid);
+                FTE += 1;
+            }
+        }
+        enrollResultReader.close();
+        FTEWriter.close();
+
+        BufferedReader matchResultReader = new BufferedReader(new FileReader(taskResult.getResultFilePath()));
+        PrintWriter FTMWriter = new PrintWriter(taskResult.getFTMFilePath());
+        while (true) {
+            String line = matchResultReader.readLine();
+            if (line == null) break;
+
+            line = StringUtils.strip(line);
+            String sp[] = line.split(" ");
+            String id1 = sp[0], id2 = sp[1], ok = sp[3];
+            if (!ok.equals("ok")) {
+                FTMWriter.println(id1 + " " + id2);
+                FTM += 1;
+            }
+        }
+        matchResultReader.close();
+        FTMWriter.close();
+    }
+
+    // Split genuine and imposter scores. BTW get FTE and FTM
     private void splitAndSortResult() throws Exception {
         // split and store in List<String>
         BufferedReader resultReader = new BufferedReader(new FileReader(taskResult.getResultFilePath()));
@@ -157,6 +199,8 @@ public class GeneralAnalyzer extends BasicAnalyzer implements Comparator<String>
         errorRatePw.println(FMR1000);
         errorRatePw.println(zeroFMR);
         errorRatePw.println(zeroFNMR);
+        errorRatePw.println(FTE);
+        errorRatePw.println(FTM);
         errorRatePw.close();
     }
 

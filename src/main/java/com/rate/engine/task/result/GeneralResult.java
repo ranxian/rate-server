@@ -81,6 +81,11 @@ public class GeneralResult extends BasicResult {
             zeroFMR = Double.parseDouble(line);
             line = StringUtils.strip(errorRateReader.readLine());
             zeroFNMR = Double.parseDouble(line);
+            line = StringUtils.strip(errorRateReader.readLine());
+            FTE = Integer.parseInt(line);
+            line = StringUtils.strip(errorRateReader.readLine());
+            FTM = Integer.parseInt(line);
+
             errorRateReader.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -97,6 +102,8 @@ public class GeneralResult extends BasicResult {
         object.put("FMR1000", this.FMR1000);
         object.put("zeroFMR", this.zeroFMR);
         object.put("zeroFNMR", this.zeroFNMR);
+        object.put("FTE", this.FTE);
+        object.put("FTM", this.FTM);
 
         return object;
     }
