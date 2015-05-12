@@ -10,6 +10,7 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Ran Xian on 3/13/14.
@@ -25,6 +26,16 @@ public class Clazz {
     private Long sampleCount; // This is just used for optimize benchmark generation
     public static final BeanHandler<Clazz> handler = new BeanHandler<Clazz>(Clazz.class, new BasicRowProcessor(new RateBeanProcessor()));
     public static final BeanListHandler<Clazz> listHandler = new BeanListHandler<Clazz>(Clazz.class, new BasicRowProcessor(new RateBeanProcessor()));
+
+    public Clazz() {
+        this.uuid = UUID.randomUUID().toString();
+    }
+
+    public void save() {
+        DBUtils.executeSQL("REPLACE INTO class (uuid,person_uuid,type,subtype,import_tag) VALUES (?,?,?,?,?)",
+                this.uuid, this.personUuid, this.type, this.subtype, this.importTag);
+    }
+
 
     public static Clazz find(String uuid) throws Exception {
         return DBUtils.executeSQL(handler, "SELECT * FROM class WHERE uuid=?", uuid);
