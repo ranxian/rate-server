@@ -182,6 +182,8 @@ public class Server {
                         infoCommand(sp[1], parsedArgs);
                     } else if (sp[0].equalsIgnoreCase("run")) {
                         runCommand(parsedArgs);
+                    } else if (sp[0].equalsIgnoreCase("rerun")) {
+                        rerunCommand(parsedArgs);
                     } else if (sp[0].equalsIgnoreCase("kill")) {
                         killCommand(parsedArgs);
                     } else if (sp[0].equalsIgnoreCase("download")) {
@@ -421,6 +423,13 @@ public class Server {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("result", "success");
             jsonObject.put("uuid", uuid);
+            println(jsonObject.toString());
+        }
+
+        public void rerunCommand(HashMap<String, String> args) throws Exception {
+            RunnerUtils.rerun(args);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("result", "success");
             println(jsonObject.toString());
         }
 

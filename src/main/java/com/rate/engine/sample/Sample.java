@@ -32,20 +32,6 @@ public class Sample {
     public static final BeanHandler<Sample> handler = new BeanHandler<Sample>(Sample.class, new BasicRowProcessor(new RateBeanProcessor()));
     public static final BeanListHandler<Sample> listHandler = new BeanListHandler<Sample>(Sample.class, new BasicRowProcessor(new RateBeanProcessor()));
 
-    public static List<Sample> findByImportTag(String importTag) {
-        return DBUtils.executeSQL(listHandler, "SELECT * FROM sample WHERE import_tag=? and classified=?", importTag, "VALID");
-    }
-
-    public static List<Sample> findByFingerTag(String fingerTag)
-    {
-        return DBUtils.executeSQL(listHandler, "SELECT * FROM tag WHERE fingerTag=? and classified='VALID'", fingerTag);
-    }
-
-    public static List<Sample> findByGenderTag(String genderTag)
-    {
-        return DBUtils.executeSQL(listHandler, "SELECT * FROM tag WHERE genderTag=? and classified='VALID'", genderTag);
-    }
-
     public static Sample find(String uuid) {
         return DBUtils.executeSQL(handler, "SELECT * FROM sample WHERE uuid=? and classified=?", uuid, "VALID");
     }

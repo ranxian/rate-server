@@ -22,7 +22,7 @@ public class BasicResult {
     protected Task task;
     protected String enrollExeFilePath;
     protected String matchExeFilePath;
-    protected String resultFilePath;
+    protected String matchResultFilePath;
     protected String enrollResultFilePath;
     protected String FTEFilePath;
     protected String FTMFilePath;
@@ -34,7 +34,8 @@ public class BasicResult {
         // Prepare file paths
         enrollExeFilePath = FilenameUtils.concat(task.getAlgorithm().dirPath(), "enroll.exe");
         matchExeFilePath = FilenameUtils.concat(task.getAlgorithm().dirPath(), "match.exe");
-        resultFilePath = FilenameUtils.concat(task.getDirPath(), "enroll_result.txt");
+        enrollResultFilePath = FilenameUtils.concat(task.getDirPath(), "enroll_result.txt");
+        matchResultFilePath = FilenameUtils.concat(task.getDirPath(), "match_result_bxx.txt");
         FTEFilePath = FilenameUtils.concat(task.getDirPath(), "FTE.txt");
         FTMFilePath = FilenameUtils.concat(task.getDirPath(), "FTM.txt");
     }

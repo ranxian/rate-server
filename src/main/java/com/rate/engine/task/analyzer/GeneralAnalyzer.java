@@ -89,7 +89,7 @@ public class GeneralAnalyzer extends BasicAnalyzer implements Comparator<String>
         enrollResultReader.close();
         FTEWriter.close();
 
-        BufferedReader matchResultReader = new BufferedReader(new FileReader(taskResult.getResultFilePath()));
+        BufferedReader matchResultReader = new BufferedReader(new FileReader(taskResult.getMatchResultFilePath()));
         PrintWriter FTMWriter = new PrintWriter(taskResult.getFTMFilePath());
         while (true) {
             String line = matchResultReader.readLine();
@@ -110,7 +110,7 @@ public class GeneralAnalyzer extends BasicAnalyzer implements Comparator<String>
     // Split genuine and imposter scores. BTW get FTE and FTM
     private void splitAndSortResult() throws Exception {
         // split and store in List<String>
-        BufferedReader resultReader = new BufferedReader(new FileReader(taskResult.getResultFilePath()));
+        BufferedReader resultReader = new BufferedReader(new FileReader(taskResult.getMatchResultFilePath()));
         List<String> genuineList = new ArrayList<String>();
         List<String> imposterList = new ArrayList<String>();
         logger.trace("splitting lines");
@@ -679,7 +679,7 @@ public class GeneralAnalyzer extends BasicAnalyzer implements Comparator<String>
         FileUtils.forceMkdir(genuineResultPath);
         FileUtils.forceMkdir(imposterResultPath);
 
-        File resultFile = new File(taskResult.getResultFilePath());
+        File resultFile = new File(taskResult.getMatchResultFilePath());
         resultFile.createNewFile();
 
         // prepare uuid table

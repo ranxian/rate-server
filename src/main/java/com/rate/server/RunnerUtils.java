@@ -1,5 +1,6 @@
 package com.rate.server;
 
+import com.rate.engine.exception.InvalidArgumentException;
 import com.rate.engine.task.Runner;
 import com.rate.engine.task.Task;
 import com.rate.utils.DBUtils;
@@ -50,6 +51,32 @@ public class RunnerUtils {
         thread.start();
 
         return task.getUuid();
+    }
+
+    public static void rerun(HashMap<String, String> args) throws Exception {
+        String uuid = args.get("uuid");
+
+        if (uuid == null) {
+            throw new InvalidArgumentException("Must provide uuid");
+        }
+
+        Task task = Task.find(uuid);
+        task.setScore(0.0);
+        task.setFinished(null);
+        task.save();
+
+        if (task == null) {
+            throw new InvalidArgumentException("Task with uuid " + uuid + "not found");
+        }
+
+        if (new File(task.getTaskPidPath()).exists()) {
+            task.killSelf();
+            logger.debug("killed previous process");
+        }
+        FileUtils.deleteDirectory(new File(task.getDirPath()));
+        Runner runner = new Runner(task);
+        Thread thread = new Thread(runner);
+        thread.start();
     }
 
     public static String info(HashMap<String, String> args) throws Exception {
