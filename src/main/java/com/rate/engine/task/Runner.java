@@ -131,9 +131,11 @@ public class Runner implements Runnable {
         list.add("-u");
         list.add(RateConfig.getDistEnginePath());
         list.add(RateConfig.getDistEngineServer());
-        list.add(benchmark.dirPath());
+        list.add(benchmark.getUuid());
+        list.add(algorithm.getUuid());
+
         list.add(task.getDirPath());
-        list.add(algorithm.bareDirPath());
+
         list.add("10000");
         list.add("50000000");
         return StringUtils.join(list, " ");

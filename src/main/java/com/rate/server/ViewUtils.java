@@ -38,20 +38,7 @@ public class ViewUtils {
             if (import_tag == null)
                 throw new InvalidArgumentException("No import_tag given");
             strategy = new ImportTagStrategy(import_tag);
-        }
-        /*
-        else if (strategyType.equalsIgnoreCase("finger_tag")) {
-            String finger_tag = args.get("finger_tag");
-            if (finger_tag == null)
-                throw new InvalidArgumentException("No finger_tag given");
-            strategy = new GenerateByFingerTagStrategy(finger_tag);
-        } else if (strategyType.equalsIgnoreCase("gender_tag")) {
-            String gender_tag = args.get("gender_tag");
-            if (gender_tag == null)
-                throw new InvalidArgumentException("No gender_tag given");
-            strategy = new GenerateByGenderTagStrategy(gender_tag);
-        }*/
-        else if (strategyType.equals("file")) {
+        } else if (strategyType.equals("file")) {
             String filePath = args.get("filePath");
             if (filePath == null)
                 throw new InvalidArgumentException("No file to generate a view");
