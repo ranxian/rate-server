@@ -63,8 +63,8 @@ public class RateConfig {
         return FilenameUtils.concat(getBinDir(), "engine");
     }
 
-    public static String getDistEnginePath() {
-        return FilenameUtils.concat(getDistEngineDir(), "engine_run.py");
+    public static String getDistProducerPath() {
+        return FilenameUtils.concat(getDistEngineDir(), "producer.py");
     }
 
     public static String getDistEngineServer() {

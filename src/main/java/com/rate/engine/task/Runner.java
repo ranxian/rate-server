@@ -129,7 +129,7 @@ public class Runner implements Runnable {
         List<String> list = new ArrayList<String>();
         list.add(RateConfig.getPythonPath());
         list.add("-u");
-        list.add(RateConfig.getDistEnginePath());
+        list.add(RateConfig.getDistProducerPath());
         list.add(RateConfig.getDistEngineServer());
         list.add(benchmark.getUuid());
         list.add(algorithm.getUuid());
