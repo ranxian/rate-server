@@ -8,17 +8,13 @@ import com.rate.utils.DBUtils;
 import com.rate.utils.RateConfig;
 import lombok.Data;
 import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.UUID;
@@ -121,6 +117,13 @@ public class Task {
         try {
             String jsonStr = FileUtils.readFileToString(new File(this.getTaskStatePath()));
             object = JSONObject.fromObject(jsonStr);
+            int enrollSubmitted = (Integer)object.get("enroll_submitted");
+            int enrollFinished = (Integer)object.get("enroll_finished");
+            int matchSubmitted = (Integer)object.get("match_submitted");
+            int matchFinished = (Integer)object.get("match_finished");
+
+            this.progress = (0.3) * ((double)enrollFinished/enrollSubmitted) +
+                    (0.7) * ((double)matchFinished/matchSubmitted);
         } catch (Exception e) {
             e.printStackTrace();
         }

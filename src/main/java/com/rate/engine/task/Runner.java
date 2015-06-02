@@ -100,9 +100,9 @@ public class Runner implements Runnable {
 
             BasicAnalyzer analyzer = (BasicAnalyzer)analyzerClass.newInstance();
             analyzer.setTask(task);
-            logger.info(String.format("Attempt to analyze task [%s] with analyzer [%s]", task.getUuid(), analyzerClass.getName()));
+            System.out.println(String.format("Attempt to analyze task [%s] with analyzer [%s]", task.getUuid(), analyzerClass.getName()));
             analyzer.analyze();
-            logger.info(String.format("Analyze task [%s] with analyzer [%s] finished", task.getUuid(), analyzerClass.getName()));
+            System.out.println(String.format("Analyze task [%s] with analyzer [%s] finished", task.getUuid(), analyzerClass.getName()));
 
             // Update task state
             task.setFinished(DBUtils.getCurrentTimestamp());
