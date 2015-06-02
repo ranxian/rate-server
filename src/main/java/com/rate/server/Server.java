@@ -123,6 +123,19 @@ public class Server {
             success("update success");
         }
 
+        private void queryStateCommand(HashMap<String, String> args) throws Exception {
+            String uuid = args.get("uuid");
+            if (uuid == null)
+                throw new InvalidArgumentException("uuid must be given");
+            Task task = Task.find(uuid);
+            if (task == null)
+                throw new InvalidArgumentException("no task with uuid " + uuid);
+
+            JSONObject taskState = task.getTaskState();
+
+            success(taskState.toString());
+        }
+
         private void failed(String msg) {
             System.out.println("failed: ");
             JSONObject object = new JSONObject();
@@ -186,6 +199,8 @@ public class Server {
                         rerunCommand(parsedArgs);
                     } else if (sp[0].equalsIgnoreCase("kill")) {
                         killCommand(parsedArgs);
+                    } else if (sp[0].equalsIgnoreCase("query_state")) {
+                        queryStateCommand(parsedArgs);
                     } else if (sp[0].equalsIgnoreCase("download")) {
                         downloadCommand(sp[1], parsedArgs);
                     } else {
@@ -193,6 +208,8 @@ public class Server {
                     }
                 } catch (IndexOutOfBoundsException e) {
                     failed("not enough arguments");
+                } catch (InvalidArgumentException e) {
+                    failed(e.getMessage());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

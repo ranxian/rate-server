@@ -8,6 +8,7 @@ import com.rate.utils.DBUtils;
 import com.rate.utils.RateConfig;
 import lombok.Data;
 import net.sf.json.JSONObject;
+import net.sf.json.JSONSerializer;
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
@@ -62,11 +63,6 @@ public class Task {
         return FilenameUtils.separatorsToUnix(p);
     }
 
-    public String getResultFilePath() {
-        String p = FilenameUtils.concat(getDirPath(), "match_result_bxx.txt");
-        return FilenameUtils.separatorsToUnix(p);
-    }
-
     public String getTempDirPath() {
         String p = FilenameUtils.concat(FilenameUtils.concat(RateConfig.getTempRootDir(), "tasks"), this.getUuid());
         String r = FilenameUtils.separatorsToUnix(p);
@@ -99,7 +95,6 @@ public class Task {
                 FileUtils.deleteDirectory(file);
         } catch (IOException ioe) {
             ioe.printStackTrace();
-            // ignore IOException
         }
     }
 
@@ -116,21 +111,21 @@ public class Task {
         }
     }
 
-    public void getTaskState() {
-        try {
-            BufferedReader stateReader = new BufferedReader(new FileReader(getTaskStatePath()));
-            // time
-            String line = StringUtils.strip(stateReader.readLine());
-            this.progress = Double.parseDouble(line);
-
-            stateReader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public String getTaskStatePath() {
+        return FilenameUtils.concat(this.getDirPath(), "log.json");
     }
 
-    public String getTaskStatePath() {
-        return FilenameUtils.concat(this.getDirPath(), "state.txt");
+    public JSONObject getTaskState() {
+        JSONObject object = null;
+
+        try {
+            String jsonStr = FileUtils.readFileToString(new File(this.getTaskStatePath()));
+            object = JSONObject.fromObject(jsonStr);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return object;
     }
 
     public String getTaskPidPath() {

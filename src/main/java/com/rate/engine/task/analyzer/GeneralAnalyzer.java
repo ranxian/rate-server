@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import net.sf.json.JSONObject;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -36,21 +37,20 @@ public class GeneralAnalyzer extends BasicAnalyzer implements Comparator<String>
     @Getter
     @Setter
     private GeneralResult taskResult;
+    private Task task;
     private int FTE = 0;
     private int FTM = 0;
 
     @Override
     public void setTask(Task task) {
         taskResult = new GeneralResult(task);
+        this.task = task;
     }
     @Override
     public void analyze() throws Exception {
         logger.trace("begin analyze");
         prepare();
         logger.trace("prepare finished");
-        logger.trace("splitAndSortResult");
-        splitAndSortResult();
-        logger.trace("done");
         logger.trace("analyzeFMR");
         analyzeFMR(taskResult.getImposterFilePath(), taskResult.getFmrFilePath());
         logger.trace("done");
@@ -105,64 +105,6 @@ public class GeneralAnalyzer extends BasicAnalyzer implements Comparator<String>
         }
         matchResultReader.close();
         FTMWriter.close();
-    }
-
-    // Split genuine and imposter scores. BTW get FTE and FTM
-    private void splitAndSortResult() throws Exception {
-        // split and store in List<String>
-        BufferedReader resultReader = new BufferedReader(new FileReader(taskResult.getMatchResultFilePath()));
-        List<String> genuineList = new ArrayList<String>();
-        List<String> imposterList = new ArrayList<String>();
-        logger.trace("splitting lines");
-        while (true) {
-            String line = resultReader.readLine();
-            if (line==null) break;
-
-            line = StringUtils.strip(line);
-
-            String rs[] = line.split(" ");
-            if (rs.length == 4) continue;
-            if ((!rs[2].equals("G")) && (!rs[2].equals("I"))) throw new Exception("Genuine or Imposter not known in result.txt");
-
-            String sample1Uuid = rs[0], sample2Uuid = rs[1], type = rs[2];
-            double matchScore = Double.parseDouble(rs[4]);
-            String newLine = String.format("%s %s %f", sample1Uuid, sample2Uuid, matchScore);
-            if (type.equals("G")) {
-                genuineList.add(newLine);
-            }
-            else {
-                imposterList.add(newLine);
-            }
-        }
-        resultReader.close();
-        logger.trace("done");
-
-        // sort results
-        Collections.sort(genuineList, this);
-        Collections.sort(imposterList, this);
-
-        // write to genuine.txt and imposter.txt
-        File genuineFile = new File(taskResult.getGenuineFilePath());
-        File imposterFile = new File(taskResult.getImposterFilePath());
-        File revImposterFile = new File(taskResult.getRevImposterPath());
-        genuineFile.createNewFile();
-        imposterFile.createNewFile();
-        revImposterFile.createNewFile();
-        PrintWriter genuinePw = new PrintWriter(genuineFile);
-        PrintWriter imposterPw = new PrintWriter(imposterFile);
-        PrintWriter revImposterPw = new PrintWriter(revImposterFile);
-        for (String line: genuineList) {
-            genuinePw.println(line);
-        }
-        for (String line: imposterList) {
-            imposterPw.println(line);
-        }
-        for (int i = imposterList.size() - 1; i >= imposterList.size() - 100 && i >= 0; i--) {
-            revImposterPw.println(imposterList.get(i));
-        }
-        genuinePw.close();
-        imposterPw.close();
-        revImposterPw.close();
     }
 
     public int compare(String s1, String s2) {

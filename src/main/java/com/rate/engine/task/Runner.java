@@ -121,7 +121,6 @@ public class Runner implements Runnable {
                     logger.error("can't delete task [" + task.getUuid() + "] pid file");
                 }
             }
-
         }
     }
     // Generate command to execute task by distributed system
@@ -130,11 +129,10 @@ public class Runner implements Runnable {
         list.add(RateConfig.getPythonPath());
         list.add("-u");
         list.add(RateConfig.getDistProducerPath());
-        list.add(RateConfig.getDistEngineServer());
         list.add(benchmark.getUuid());
         list.add(algorithm.getUuid());
 
-        list.add(task.getDirPath());
+        list.add(task.getUuid());
 
         list.add("10000");
         list.add("50000000");
