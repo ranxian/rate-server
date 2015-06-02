@@ -122,8 +122,13 @@ public class Task {
             int matchSubmitted = (Integer)object.get("match_submitted");
             int matchFinished = (Integer)object.get("match_finished");
 
-            this.progress = (0.3) * ((double)enrollFinished/enrollSubmitted) +
-                    (0.7) * ((double)matchFinished/matchSubmitted);
+            this.progress = 0.0;
+            if (enrollSubmitted != 0) {
+                this.progress += (0.3) * ((double)enrollFinished/enrollSubmitted);
+            }
+            if (matchSubmitted != 0) {
+                this.progress += (0.7) * ((double)matchFinished/matchSubmitted);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -31,7 +31,7 @@ import java.util.List;
 // GeneralAnalyzer outputs metrics like FMR, FNMR, EER, ROC, score distributions etc.
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class GeneralAnalyzer extends BasicAnalyzer implements Comparator<String> {
+public class GeneralAnalyzer extends BasicAnalyzer {
     private static final double E = 1e-15;
     private static final Logger logger = Logger.getLogger(GeneralAnalyzer.class);
     @Getter
@@ -72,47 +72,9 @@ public class GeneralAnalyzer extends BasicAnalyzer implements Comparator<String>
     }
 
     private void analyzeFTEFTM() throws Exception {
-        BufferedReader enrollResultReader = new BufferedReader(new FileReader(taskResult.getEnrollResultFilePath()));
-        PrintWriter FTEWriter = new PrintWriter(taskResult.getFTEFilePath());
-        while (true) {
-            String line = enrollResultReader.readLine();
-            if (line == null) break;
-
-            line = StringUtils.strip(line);
-            String sp[] = line.split(" ");
-            String uuid = sp[0];
-            if (!sp[1].equals("ok")) {
-                FTEWriter.println(uuid);
-                FTE += 1;
-            }
-        }
-        enrollResultReader.close();
-        FTEWriter.close();
-
-        BufferedReader matchResultReader = new BufferedReader(new FileReader(taskResult.getMatchResultFilePath()));
-        PrintWriter FTMWriter = new PrintWriter(taskResult.getFTMFilePath());
-        while (true) {
-            String line = matchResultReader.readLine();
-            if (line == null) break;
-
-            line = StringUtils.strip(line);
-            String sp[] = line.split(" ");
-            String id1 = sp[0], id2 = sp[1], ok = sp[3];
-            if (!ok.equals("ok")) {
-                FTMWriter.println(id1 + " " + id2);
-                FTM += 1;
-            }
-        }
-        matchResultReader.close();
-        FTMWriter.close();
-    }
-
-    public int compare(String s1, String s2) {
-        String ss1[] = s1.split(" ");
-        String ss2[] = s2.split(" ");
-        double d1 = Double.parseDouble(ss1[ss1.length-1]);
-        double d2 = Double.parseDouble(ss2[ss2.length-1]);
-        return (d1<d2 ? -1 : (d1==d2 ? 0 : 1));
+        JSONObject taskState = this.task.getTaskState();
+        this.FTE = (Integer)taskState.get("enroll_failed");
+        this.FTM = (Integer)taskState.get("match_failed");
     }
 
     // Calculate FMR100, FMR1000, zeroFMR, zeroFNMR and EER
