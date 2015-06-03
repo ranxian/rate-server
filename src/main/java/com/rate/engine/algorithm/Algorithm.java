@@ -28,7 +28,6 @@ public class Algorithm {
     Logger logger = Logger.getLogger(Algorithm.class.getName());
     private String uuid;
     private Timestamp created;
-    private int checked;
 
     public Algorithm() {
         this.uuid = UUID.randomUUID().toString();
@@ -66,7 +65,7 @@ public class Algorithm {
     }
 
     public void save() throws Exception {
-        DBUtils.executeSQL("REPLACE INTO algorithm (uuid, checked) " +
+        DBUtils.executeSQL("REPLACE INTO algorithm (uuid, created) " +
                 "VALUES(?,null)", this.uuid);
     }
 

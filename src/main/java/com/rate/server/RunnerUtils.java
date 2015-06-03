@@ -61,13 +61,14 @@ public class RunnerUtils {
         }
 
         Task task = Task.find(uuid);
-        task.setScore(0.0);
-        task.setFinished(null);
-        task.save();
 
         if (task == null) {
             throw new InvalidArgumentException("Task with uuid " + uuid + "not found");
         }
+
+        task.setScore(0.0);
+        task.setFinished(null);
+        task.save();
 
         if (new File(task.getTaskPidPath()).exists()) {
             task.killSelf();
