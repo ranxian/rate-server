@@ -123,6 +123,7 @@ public class Runner implements Runnable {
             }
         }
     }
+
     // Generate command to execute task by distributed system
     private String buildDistCommand() {
         List<String> list = new ArrayList<String>();

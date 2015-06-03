@@ -51,6 +51,9 @@ public class GeneralAnalyzer extends BasicAnalyzer {
         logger.trace("begin analyze");
         prepare();
         logger.trace("prepare finished");
+        logger.trace("analyzeFTEFTM");
+        analyzeFTEFTM();
+        logger.trace("done");
         logger.trace("analyzeFMR");
         analyzeFMR(taskResult.getImposterFilePath(), taskResult.getFmrFilePath());
         logger.trace("done");
@@ -59,9 +62,6 @@ public class GeneralAnalyzer extends BasicAnalyzer {
         logger.trace("done");
         logger.trace("analyzeErrorRates");
         analyzeErrorRates();
-        logger.trace("done");
-        logger.trace("analyzeFTEFTM");
-        analyzeFTEFTM();
         logger.trace("done");
         logger.trace("analyzeROC");
         analyzeROC(taskResult.getFmrFilePath(), taskResult.getFnmrFilePath(), taskResult.getRocFilePath());
