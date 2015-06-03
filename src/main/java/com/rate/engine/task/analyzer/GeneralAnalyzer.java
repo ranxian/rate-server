@@ -75,6 +75,7 @@ public class GeneralAnalyzer extends BasicAnalyzer {
         JSONObject taskState = this.task.getTaskState();
         this.FTE = (Integer)taskState.get("enroll_failed");
         this.FTM = (Integer)taskState.get("match_failed");
+        logger.trace("FTE is " + taskState.get("enroll_failed"));
     }
 
     // Calculate FMR100, FMR1000, zeroFMR, zeroFNMR and EER
