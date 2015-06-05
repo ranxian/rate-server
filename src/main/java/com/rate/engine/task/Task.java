@@ -79,7 +79,7 @@ public class Task {
         Integer pid = this.getTaskPid();
         if (pid == null)
             throw new Exception("No running instance");
-        Process process = Runtime.getRuntime().exec("kill -9 " + pid);
+        Process process = Runtime.getRuntime().exec("kill -15 " + pid);
         process.waitFor();
     }
 
