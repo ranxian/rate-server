@@ -156,8 +156,10 @@ public class Task {
         object.put("FMR1000", result.getFMR1000());
         object.put("zeroFNMR", result.getZeroFNMR());
         object.put("zeroFMR", result.getZeroFMR());
-        object.put("FTE", "0");
-        object.put("FTM", "0");
+        object.put("FTE", result.getFTE());
+        object.put("FTM", result.getFTM());
+        object.put("aveEnrollTime", result.getAveEnrollTime());
+        object.put("aveMatchTime", result.getAveMatchTime());
         object.put("uuid", this.uuid);
         object.put("buuid", this.benchmarkUuid);
         object.put("auuid", this.algorithmUuid);
