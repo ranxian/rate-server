@@ -102,7 +102,10 @@ public class GeneralAnalyzer extends BasicAnalyzer {
         }
         reader.close();
 
-        matchAveTime = (double)sumMatch / nMatch;
+        if (nMatch != 0)
+            matchAveTime = (double)sumMatch / nMatch;
+        else
+            matchAveTime = 99999.0;
 
         int nEnroll = 0;
         int sumEnroll = 0;
@@ -116,7 +119,10 @@ public class GeneralAnalyzer extends BasicAnalyzer {
             sumEnroll += mms;
         }
 
-        enrollAveTime = (double)sumEnroll / nEnroll;
+        if (nEnroll != 0)
+            enrollAveTime = (double)sumEnroll / nEnroll;
+        else
+            enrollAveTime = 999999.0;
     }
 
     private void analyzeFTEFTM() throws Exception {
