@@ -27,8 +27,6 @@ public class GeneralResult extends BasicResult {
     private String fmrFilePath;
     private String fnmrFilePath;
     private String badResultDir;
-    private String genuineResultPath;
-    private String imposterResultPath;
     private String revImposterPath;
     private String fmrFnmrImagePath;
     private String rocImagePath;
@@ -53,8 +51,6 @@ public class GeneralResult extends BasicResult {
         fnmrFilePath = FilenameUtils.concat(task.getDirPath(), "fnmr.txt");
         fmrFilePath = FilenameUtils.concat(task.getDirPath(), "fmr.txt");
         badResultDir = FilenameUtils.concat(task.getDirPath(), "bad-result");
-        genuineResultPath = FilenameUtils.concat(badResultDir, "genuine");
-        imposterResultPath = FilenameUtils.concat(badResultDir, "imposter");
         fmrFnmrImagePath = FilenameUtils.concat(task.getDirPath(), "fmrFnmr.png");
         rocImagePath = FilenameUtils.concat(task.getDirPath(), "roc.png");
         scoreImagePath = FilenameUtils.concat(task.getDirPath(), "score.png");
@@ -85,6 +81,10 @@ public class GeneralResult extends BasicResult {
             FTE = Integer.parseInt(line);
             line = StringUtils.strip(errorRateReader.readLine());
             FTM = Integer.parseInt(line);
+            line = StringUtils.strip(errorRateReader.readLine());
+            aveEnrollTime = Double.parseDouble(line);
+            line = StringUtils.strip(errorRateReader.readLine());
+            aveMatchTime = Double.parseDouble(line);
 
             errorRateReader.close();
         } catch (IOException e) {
@@ -104,6 +104,8 @@ public class GeneralResult extends BasicResult {
         object.put("zeroFNMR", this.zeroFNMR);
         object.put("FTE", this.FTE);
         object.put("FTM", this.FTM);
+        object.put("aveEnrollTime", this.aveEnrollTime);
+        object.put("aveMatchTime", this.aveMatchTime);
 
         return object;
     }

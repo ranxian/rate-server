@@ -40,6 +40,8 @@ public class GeneralAnalyzer extends BasicAnalyzer {
     private Task task;
     private int FTE = 0;
     private int FTM = 0;
+    private double enrollAveTime;
+    private double matchAveTime;
 
     @Override
     public void setTask(Task task) {
@@ -60,6 +62,9 @@ public class GeneralAnalyzer extends BasicAnalyzer {
         logger.trace("analyzeFNMR");
         analyzeFNMR(taskResult.getGenuineFilePath(), taskResult.getFnmrFilePath());
         logger.trace("done");
+        logger.trace("analyzeRuntime");
+        analyzeRuntime();
+        logger.trace("done");
         logger.trace("analyzeErrorRates");
         analyzeErrorRates();
         logger.trace("done");
@@ -69,6 +74,49 @@ public class GeneralAnalyzer extends BasicAnalyzer {
         logger.trace("generateImage");
         generateImage();
         logger.trace("done");
+    }
+
+    private void analyzeRuntime() throws Exception {
+        BufferedReader reader = new BufferedReader(new FileReader(taskResult.getImposterFilePath()));
+
+        int nMatch = 0;
+        int sumMatch = 0;
+        while (true) {
+            String line = reader.readLine();
+            if (line == null)
+                break;
+            int mms = Integer.parseInt(line.split(" ")[4]);
+            nMatch += 1;
+            sumMatch += mms;
+        }
+
+        reader.close();
+        reader = new BufferedReader(new FileReader(taskResult.getGenuineFilePath()));
+        while (true) {
+            String line = reader.readLine();
+            if (line == null)
+                break;
+            int mms = Integer.parseInt(line.split(" ")[4]);
+            nMatch += 1;
+            sumMatch += mms;
+        }
+        reader.close();
+
+        matchAveTime = (double)sumMatch / nMatch;
+
+        int nEnroll = 0;
+        int sumEnroll = 0;
+        reader = new BufferedReader(new FileReader(taskResult.getEnrollResultFilePath()));
+        while (true) {
+            String line = reader.readLine();
+            if (line == null)
+                break;
+            int mms = Integer.parseInt(line.split(" ")[2]);
+            nEnroll += 1;
+            sumEnroll += mms;
+        }
+
+        enrollAveTime = (double)sumEnroll / nEnroll;
     }
 
     private void analyzeFTEFTM() throws Exception {
@@ -106,6 +154,8 @@ public class GeneralAnalyzer extends BasicAnalyzer {
         errorRatePw.println(zeroFNMR);
         errorRatePw.println(FTE);
         errorRatePw.println(FTM);
+        errorRatePw.println(enrollAveTime);
+        errorRatePw.println(matchAveTime);
         errorRatePw.close();
     }
 
@@ -578,15 +628,6 @@ public class GeneralAnalyzer extends BasicAnalyzer {
     }
 
     private void prepare() throws Exception {
-        File genuineResultPath = new File(taskResult.getGenuineResultPath());
-        File imposterResultPath = new File(taskResult.getImposterResultPath());
-
-        FileUtils.forceMkdir(genuineResultPath);
-        FileUtils.forceMkdir(imposterResultPath);
-
-        File resultFile = new File(taskResult.getMatchResultFilePath());
-        resultFile.createNewFile();
-
         // prepare uuid table
         try {
             BufferedReader reader = new BufferedReader(new FileReader(taskResult.getTask().getBenchmark().getUuidTableFilePath()));

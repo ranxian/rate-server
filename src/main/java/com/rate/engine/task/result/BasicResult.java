@@ -28,6 +28,8 @@ public class BasicResult {
     protected String FTMFilePath;
     protected int FTE;
     protected int FTM;
+    protected double aveEnrollTime;
+    protected double aveMatchTime;
 
     public BasicResult(Task task) {
         this.task = task;

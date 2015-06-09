@@ -104,10 +104,6 @@ public class Runner implements Runnable {
             analyzer.analyze();
             System.out.println(String.format("Analyze task [%s] with analyzer [%s] finished", task.getUuid(), analyzerClass.getName()));
 
-            // Update task state
-            task.setFinished(DBUtils.getCurrentTimestamp());
-            task.save();
-
             logger.info("task done.");
         } catch (Exception e) {
             logger.error("", e);
@@ -121,6 +117,10 @@ public class Runner implements Runnable {
                     logger.error("can't delete task [" + task.getUuid() + "] pid file");
                 }
             }
+            // Task must be finished
+            // Update task state
+            task.setFinished(DBUtils.getCurrentTimestamp());
+            task.save();
         }
     }
 
