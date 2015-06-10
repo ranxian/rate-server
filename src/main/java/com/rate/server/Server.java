@@ -203,6 +203,8 @@ public class Server {
                         queryStateCommand(parsedArgs);
                     } else if (sp[0].equalsIgnoreCase("download")) {
                         downloadCommand(sp[1], parsedArgs);
+                    } else if (sp[0].equalsIgnoreCase("continue")) {
+                        continueCommand(parsedArgs);
                     } else {
                         failed(null);
                     }
@@ -445,6 +447,13 @@ public class Server {
 
         public void rerunCommand(HashMap<String, String> args) throws Exception {
             RunnerUtils.rerun(args);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("result", "success");
+            println(jsonObject.toString());
+        }
+
+        public void continueCommand(HashMap<String, String> args) throws Exception {
+            RunnerUtils.continueOn(args);
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("result", "success");
             println(jsonObject.toString());

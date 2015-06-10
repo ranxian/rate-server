@@ -53,6 +53,33 @@ public class RunnerUtils {
         return task.getUuid();
     }
 
+    public static void continueOn(HashMap<String, String> args) throws Exception {
+        String uuid = args.get("uuid");
+
+        if (uuid == null) {
+            throw new InvalidArgumentException("Must provide uuid");
+        }
+
+        Task task = Task.find(uuid);
+
+        if (task == null) {
+            throw new InvalidArgumentException("Task with uuid " + uuid + "not found");
+        }
+
+        task.setScore(0.0);
+        task.setFinished(null);
+        task.save();
+
+        if (new File(task.getTaskPidPath()).exists()) {
+            task.killSelf();
+            logger.debug("killed previous process");
+        }
+
+        Runner runner = new Runner(task);
+        Thread thread = new Thread(runner);
+        thread.start();
+    }
+
     public static void rerun(HashMap<String, String> args) throws Exception {
         String uuid = args.get("uuid");
 
