@@ -355,7 +355,7 @@ public class Server {
         public void importCommand(HashMap<String, String> args) throws Exception {
             File tempFile = new File(UUID.randomUUID().toString() + ".zip");
             JSONObject jsonObject = new JSONObject();
-            if (args.get("has_file").equalsIgnoreCase("true")) {
+            if (args.get("has_file") != null && args.get("has_file").equalsIgnoreCase("true")) {
                 receiveFile(tempFile);
                 args.put("zip_path", tempFile.getAbsolutePath());
             } else {
