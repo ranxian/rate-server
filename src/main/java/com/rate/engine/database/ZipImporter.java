@@ -70,8 +70,12 @@ public class ZipImporter {
         for (File clazzdir : clazzdirs) {
             Clazz clazz = new Clazz();
             clazz.setImportTag(importTag);
-            runner.update(conn, "INSERT INTO class (uuid,person_uuid,type,subtype,import_tag) VALUES (?,?,?,?,?)",
+            runner.update(conn, "INSERT INTO class (uuid,person_uuid,type,subtype,import_tag,created) VALUES (?,?,?,?,?,null)",
                     clazz.getUuid(), null, "FINGERVEIN", 9, importTag);
+
+            if (clazzdir.getName().startsWith("__")) {
+                continue;
+            }
 
             File[] sampleFiles = clazzdir.listFiles();
 
@@ -88,7 +92,7 @@ public class ZipImporter {
                 sample.setImportTag(importTag);
 
                 sample.setClassUuid(clazz.getUuid());
-                runner.update(conn, "INSERT INTO sample (uuid, class_uuid, file, import_tag, classified) VALUES (?,?,?,?,?)",
+                runner.update(conn, "INSERT INTO sample (uuid, class_uuid, file, import_tag, classified, created) VALUES (?,?,?,?,?,null)",
                         sample.getUuid(), sample.getClassUuid(), sample.getFile(), sample.getImportTag(), "VALID");
                 nProcessed += 1;
                 if (nProcessed % 50 == 0) {
