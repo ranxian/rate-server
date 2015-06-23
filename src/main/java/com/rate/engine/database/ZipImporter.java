@@ -71,7 +71,7 @@ public class ZipImporter {
             Clazz clazz = new Clazz();
             clazz.setImportTag(importTag);
             runner.update(conn, "INSERT INTO class (uuid,person_uuid,type,subtype,import_tag) VALUES (?,?,?,?,?)",
-                    clazz.getUuid(), null, "FINGERVEIN", null, importTag);
+                    clazz.getUuid(), null, "FINGERVEIN", 9, importTag);
 
             File[] sampleFiles = clazzdir.listFiles();
 
