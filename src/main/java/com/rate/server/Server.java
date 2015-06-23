@@ -358,6 +358,8 @@ public class Server {
             if (args.get("has_file").equalsIgnoreCase("true")) {
                 receiveFile(tempFile);
                 args.put("zip_path", tempFile.getAbsolutePath());
+            } else {
+                logger.trace("not file uploaded");
             }
             try {
                 DatabaseUtils.zipImport(args, output);
