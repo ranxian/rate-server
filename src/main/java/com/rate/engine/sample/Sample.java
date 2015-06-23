@@ -11,6 +11,7 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 import java.sql.*;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Ran Xian on 3/11/14.
@@ -31,6 +32,10 @@ public class Sample {
 
     public static final BeanHandler<Sample> handler = new BeanHandler<Sample>(Sample.class, new BasicRowProcessor(new RateBeanProcessor()));
     public static final BeanListHandler<Sample> listHandler = new BeanListHandler<Sample>(Sample.class, new BasicRowProcessor(new RateBeanProcessor()));
+
+    public Sample() {
+        this.uuid = UUID.randomUUID().toString();
+    }
 
     public static Sample find(String uuid) {
         return DBUtils.executeSQL(handler, "SELECT * FROM sample WHERE uuid=? and classified=?", uuid, "VALID");
