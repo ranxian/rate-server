@@ -68,14 +68,14 @@ public class ZipImporter {
         runner.update(conn, "START TRANSACTION");
 
         for (File clazzdir : clazzdirs) {
+            if (clazzdir.getName().startsWith("__")) {
+                continue;
+            }
+
             Clazz clazz = new Clazz();
             clazz.setImportTag(importTag);
             runner.update(conn, "INSERT INTO class (uuid,person_uuid,type,subtype,import_tag,created) VALUES (?,?,?,?,?,null)",
                     clazz.getUuid(), null, "FINGERVEIN", 9, importTag);
-
-            if (clazzdir.getName().startsWith("__")) {
-                continue;
-            }
 
             File[] sampleFiles = clazzdir.listFiles();
 
@@ -84,6 +84,10 @@ public class ZipImporter {
                 return;
             }
             for  (File sampleFile : sampleFiles) {
+                if (sampleFile.getName().startsWith(".")) {
+                    continue;
+                }
+
                 String samplePath = zipFileBaseName + "/" + sampleFile.getParentFile().getName() + "/" +
                         sampleFile.getName();
 
