@@ -364,7 +364,8 @@ public class Server {
             try {
                 DatabaseUtils.zipImport(args, output);
             } finally {
-                FileUtils.forceDelete(tempFile);
+                if (tempFile.exists())
+                    FileUtils.forceDelete(tempFile);
             }
             jsonObject.put("result", "success");
             println(jsonObject.toString());
