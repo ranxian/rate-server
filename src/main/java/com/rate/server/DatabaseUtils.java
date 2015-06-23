@@ -12,7 +12,7 @@ import java.util.HashMap;
 public class DatabaseUtils {
     public static void zipImport(HashMap<String, String> args, PrintWriter writer) throws Exception {
         String importTag = args.get("import_tag");
-        String zipPath = args.get("zipPath");
+        String zipPath = args.get("zip_path");
         if (zipPath == null || importTag == null) {
             throw new InvalidArgumentException("Not enough argument");
         }
