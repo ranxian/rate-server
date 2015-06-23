@@ -58,7 +58,7 @@ public class ZipImporter {
         // Calculate number of samples
         for (File clazzdir : clazzdirs) {
             File[] samples = clazzdir.listFiles();
-            if (clazzdir.listFiles() != null) {
+            if (samples != null) {
                 nSample += samples.length;
             }
         }
@@ -70,7 +70,7 @@ public class ZipImporter {
         for (File clazzdir : clazzdirs) {
             Clazz clazz = new Clazz();
             clazz.setImportTag(importTag);
-            runner.update("INSERT INTO class (uuid,person_uuid,type,subtype,import_tag) VALUES (?,?,?,?,?)",
+            runner.update(conn, "INSERT INTO class (uuid,person_uuid,type,subtype,import_tag) VALUES (?,?,?,?,?)",
                     clazz.getUuid(), null, "FINGERVEIN", null, importTag);
 
             File[] sampleFiles = clazzdir.listFiles();
@@ -88,7 +88,7 @@ public class ZipImporter {
                 sample.setImportTag(importTag);
 
                 sample.setClassUuid(clazz.getUuid());
-                runner.update("INSERT INTO sample (uuid, class_uuid, file, import_tag, classified) VALUES (?,?,?,?,?)",
+                runner.update(conn, "INSERT INTO sample (uuid, class_uuid, file, import_tag, classified) VALUES (?,?,?,?,?)",
                         sample.getUuid(), sample.getClassUuid(), sample.getFile(), sample.getImportTag(), "VALID");
                 nProcessed += 1;
                 if (nProcessed % 50 == 0) {
@@ -96,7 +96,7 @@ public class ZipImporter {
                 }
             }
         }
-        runner.update("COMMIT");
+        runner.update(conn, "COMMIT");
         progressWriter.println("DONE");
         logger.trace("Import successfully");
     }
