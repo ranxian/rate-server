@@ -22,7 +22,7 @@ public class Sample {
     private String uuid;
     private String classUuid;
     private String personUuid;
-    private String deviceUuid;
+    private String device;
     private Timestamp created;
     private String file;
     private String importTag;

@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -205,6 +206,8 @@ public class Server {
                         downloadCommand(sp[1], parsedArgs);
                     } else if (sp[0].equalsIgnoreCase("continue")) {
                         continueCommand(parsedArgs);
+                    } else if (sp[0].equalsIgnoreCase("import")) {
+                        importCommand(parsedArgs);
                     } else {
                         failed(null);
                     }
@@ -347,6 +350,22 @@ public class Server {
                 failed(e.getMessage());
                 e.printStackTrace();
             }
+        }
+
+        public void importCommand(HashMap<String, String> args) throws Exception {
+            File tempFile = new File(UUID.randomUUID().toString() + ".zip");
+            JSONObject jsonObject = new JSONObject();
+            if (args.get("has_file").equalsIgnoreCase("true")) {
+                receiveFile(tempFile);
+                args.put("zip_path", tempFile.getAbsolutePath());
+            }
+            try {
+                DatabaseUtils.zipImport(args, output);
+            } finally {
+                FileUtils.forceDelete(tempFile);
+            }
+            jsonObject.put("result", "success");
+            println(jsonObject.toString());
         }
 
         public void deleteCommand(String target, HashMap<String, String> args) {
